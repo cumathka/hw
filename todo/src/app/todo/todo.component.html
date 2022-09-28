@@ -1,0 +1,65 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <h3 class="bg-primary text-white p-3">
+               {{getName()}}'s Todo List                
+            </h3>
+    
+            <div class="input-group mb-3">
+                <input #inputItem type="text" class="form-control" (keyup.enter)="addItem(inputItem.value); inputItem.value=''">
+                <button class="btn btn-outline-primary" (click)="addItem(inputItem.value); inputItem.value=''" >Add</button>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" [(ngModel)]="displayAll" class="form-check-input" name="" id="displayAll">
+                <label for="displayAll" class="form-check-label">Show All Task</label>
+            </div>
+
+            <div class="my-2 font-weight-bold">
+                <span class="bg-dark text-light "> {{displayCount()}}</span>  Task Done.
+            </div>
+
+            <div class="alert alert-warning" *ngIf="getItems().length == 0 else itemsTable">
+                No Tasks Listed!!!
+            </div>
+           
+            <ng-template #itemsTable>
+
+                <table class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Description</th>
+                            <th>Action</th>
+                            <th>Check</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of getItems() , let i = index" [class]="{'bg-info':item.action ,'bg-warning':!item.action}" >
+                            <td>{{i+1}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+                                <!-- <div *ngIf="item.action">Done</div>
+                                <div *ngIf="!item.action">Not Done</div> -->
+                            
+                                <div [ngSwitch]="item.action">
+                                    <div *ngSwitchCase="true">Done</div>
+                                    <div *ngSwitchDefault>Not Done</div>
+                                </div>
+                            
+                            </td>
+                            <td>
+                                <input type="checkbox" [(ngModel)]="item.action" name="" id="">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </ng-template>
+
+            
+
+          
+        </div>
+    </div>
+</div>
